@@ -3123,10 +3123,15 @@ _("Warning: The journal is dirty. You may wish to replay the journal like:\n\n"
 			rc = 1;
 			goto closefs;
 		}
+		if (ext2fs_r_blocks_count(sb) == reserved_blocks) {
+			printf(_("Reserved blocks is already %llu, do nothing\n"),
+                                reserved_blocks);
+		} else {
 		ext2fs_r_blocks_count_set(sb, reserved_blocks);
 		ext2fs_mark_super_dirty(fs);
 		printf(_("Setting reserved blocks count to %llu\n"),
 		       reserved_blocks);
+		}
 	}
 	if (s_flag == 1) {
 		if (ext2fs_has_feature_sparse_super(sb)) {
